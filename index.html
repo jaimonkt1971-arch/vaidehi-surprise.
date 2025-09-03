@@ -94,21 +94,84 @@
     }
     .game h2 { color: #ff4d6d; }
 
-    /* Find the Cat */
-    #cat-area {
-      position: relative;
-      width: 100%;
-      height: 200px;
-      background: #ffe5ec;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-    .cat {
-      position: absolute;
-      font-size: 2rem;
-      cursor: pointer;
+   <!-- Game 1 -->
+<div class="game" id="game1">
+  <h2>🐱 Find the Hidden Cat 🐱</h2>
+  <p>Tap the 🐱 before time runs out!</p>
+  <div id="cat-area"></div>
+  <p id="cat-timer">⏳ Time left: 15s</p>
+</div>
+
+<style>
+  #cat-area {
+    position: relative;
+    width: 100%;
+    height: 250px;
+    background: #ffe5ec;
+    border-radius: 15px;
+    overflow: hidden;
+  }
+  .animal {
+    position: absolute;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  .animal:hover {
+    transform: scale(1.3);
+  }
+</style>
+
+<script>
+  function startGame1() {
+    let area = document.getElementById("cat-area");
+    let timerDisplay = document.getElementById("cat-timer");
+    let timeLeft = 15;
+    let interval, timer;
+
+    function spawnAnimals() {
+      area.innerHTML = "";
+      let animals = ["🐶","🐰","🦊","🐸","🐷","🐵","🐱"];
+      animals.sort(() => 0.5 - Math.random()); // shuffle
+      animals.forEach((animal) => {
+        let el = document.createElement("div");
+        el.classList.add("animal");
+        el.innerHTML = animal;
+        el.style.top = Math.random() * 200 + "px";
+        el.style.left = Math.random() * 80 + "%";
+
+        if (animal === "🐱") {
+          el.onclick = () => {
+            clearInterval(interval);
+            clearInterval(timer);
+            alert("🎉 You found the cat in time! 🐾");
+            document.getElementById("game1").classList.add("hidden");
+            document.getElementById("game2").classList.remove("hidden");
+            document.getElementById("game2").classList.add("fade-in");
+            startGame2();
+          };
+        }
+        area.appendChild(el);
+      });
     }
 
+    // spawn new animals every 2 seconds
+    interval = setInterval(spawnAnimals, 2000);
+    spawnAnimals();
+
+    // countdown timer
+    timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = `⏳ Time left: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        clearInterval(timer);
+        alert("😢 Time’s up! The cat ran away… Try again?");
+        startGame1(); // restart
+      }
+    }, 1000);
+  }
+</script>
     /* Balloon Pop */
     #balloon-area {
       position: relative;
@@ -378,3 +441,4 @@
   </script>
 </body>
 </html>
+
