@@ -226,6 +226,12 @@
   <div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
   <div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
 
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
   <script>
     // Loading screen timeout
     window.onload = function() {
@@ -235,10 +241,15 @@
       }, 1500);
     };
 
-    // Enter button -> reveal main content
+    // Enter button -> reveal main content + play music
     document.getElementById("enter-btn").onclick = function() {
       document.getElementById("intro").style.display = "none";
       document.getElementById("main-content").style.display = "block";
+
+      const music = document.getElementById("bg-music");
+      music.play().catch(() => {
+        console.log("Autoplay blocked — user interaction needed.");
+      });
     };
 
     // Puzzle teaser
@@ -256,4 +267,3 @@
   </script>
 </body>
 </html>
-
