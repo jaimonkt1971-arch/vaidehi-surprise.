@@ -3,267 +3,336 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Happy Birthday Vaidehi 🎀✨</title>
+  <title>Happy Birthday Vaidehi 🎉</title>
   <style>
     body, html {
       margin: 0;
       padding: 0;
       font-family: "Comic Sans MS", cursive, sans-serif;
-      background: linear-gradient(135deg, #ffe6f2, #fff0f5, #e6f0ff);
+      background: #fff0f6;
       overflow: hidden;
-      height: 100%;
-      text-align: center;
     }
 
     .section {
       display: none;
       opacity: 0;
-      transition: opacity 1s ease;
+      transition: opacity 1s ease, transform 1s ease;
       height: 100vh;
       width: 100%;
-      padding: 1rem;
-      box-sizing: border-box;
-      position: absolute;
-      top: 0; left: 0;
+      text-align: center;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      transform: translateY(30px);
     }
-    .section.active {
-      display: block;
+    .active {
+      display: flex;
       opacity: 1;
+      transform: translateY(0);
     }
 
-    /* Floating paws + hearts */
+    /* Floating decorations */
     .float {
       position: fixed;
-      font-size: 2rem;
-      opacity: 0.5;
+      font-size: 1.5rem;
+      opacity: 0.6;
       animation: floatUp 12s linear infinite;
-      bottom: -10%;
+      bottom: -5%;
       z-index: 0;
     }
     @keyframes floatUp {
-      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      0% { transform: translateY(100vh) scale(0.8); opacity: 0; }
       20% { opacity: 1; }
       80% { opacity: 1; }
-      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+      100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
     }
 
-    h1, h2 {
-      color: #ff4da6;
-      text-shadow: 2px 2px 5px #ffb6c1aa;
+    /* Loading screen */
+    #loading {
+      background: #ffdde1;
+      flex-direction: column;
+    }
+    #loading h2 {
+      color: #ff4d6d;
+      animation: pulse 1.5s infinite;
+      z-index: 1;
     }
 
-    button {
-      padding: 0.8rem 2rem;
+    /* Intro */
+    #intro {
+      background: linear-gradient(135deg, #ffb3c6, #ffdde1);
+      color: #fff;
+      text-shadow: 2px 2px 5px #00000033;
+    }
+    #intro h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+    #intro p { font-size: 1.3rem; margin-bottom: 1.5rem; }
+    #enter-btn {
+      padding: 1rem 2rem;
       font-size: 1.2rem;
-      background: #ff80bf;
+      background: #ff4d6d;
       color: #fff;
       border: none;
       border-radius: 50px;
       cursor: pointer;
-      box-shadow: 0 0 15px #ffb6c1;
-      transition: transform 0.3s ease, background 0.3s ease;
+      box-shadow: 0 0 20px #ff4d6d88;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
-    button:hover {
+    #enter-btn:hover {
       transform: scale(1.1);
-      background: #ff4da6;
+      box-shadow: 0 0 25px #ff4d6d;
     }
 
     /* Gallery */
     #gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 1rem;
-      margin-top: 2rem;
+      background: #fff0f6;
+      flex-direction: column;
+      padding: 1rem;
     }
-    #gallery img {
+    #gallery h2 { color: #ff4d6d; font-size: 2rem; }
+    #photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    #photos img {
       width: 100%;
       border-radius: 15px;
-      box-shadow: 0 0 10px rgba(255,182,193,0.6);
-      transition: transform 0.4s, box-shadow 0.4s;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     }
-    #gallery img:hover {
-      transform: scale(1.05) rotate(1deg);
-      box-shadow: 0 0 20px #ff99cc, 0 0 30px #ffccff;
+    #photos img:hover {
+      transform: scale(1.08);
+      box-shadow: 0 6px 15px rgba(0,0,0,0.2);
     }
 
-    /* Cat Game */
-    .animals {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1rem;
-      margin-top: 2rem;
+    /* Games */
+    .game h2 { color: #ff4d6d; font-size: 1.8rem; }
+    #cat-area {
+      position: relative;
+      width: 90%;
+      height: 250px;
+      margin: 1rem auto;
+      background: #ffe5ec;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
     }
     .animal {
-      font-size: 2.5rem;
+      position: absolute;
+      font-size: 2rem;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s ease;
     }
-    .animal:hover {
-      transform: scale(1.3) rotate(10deg);
-    }
+    .animal:hover { transform: scale(1.3) rotate(10deg); }
 
-    /* Balloon Game */
+    #balloon-area {
+      position: relative;
+      width: 90%;
+      height: 300px;
+      margin: 1rem auto;
+      background: #ffe5ec;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.1);
+    }
     .balloon {
       position: absolute;
-      bottom: -150px;
-      font-size: 3rem;
+      font-size: 2rem;
       cursor: pointer;
-      animation: rise 6s linear infinite;
-    }
-    @keyframes rise {
-      0% { transform: translateY(0); opacity: 1; }
-      100% { transform: translateY(-110vh); opacity: 0; }
+      animation: floatUp 6s linear forwards;
     }
 
     /* Final Message */
-    #final-message {
-      font-size: 1.2rem;
-      color: #444;
-      white-space: pre-line;
-      display: inline-block;
+    #message {
+      background: linear-gradient(135deg, #fff0f6, #ffe5ec);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 25px rgba(255,105,180,0.4);
       max-width: 90%;
-      line-height: 1.6;
+      margin: auto;
     }
-    .hearts {
-      font-size: 1.5rem;
-      animation: floatUp 8s linear infinite;
-      opacity: 0.7;
+    #message h2 { color: #ff4d6d; margin-bottom: 1rem; }
+    #message p {
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+    .btn {
+      padding: 1rem 2rem;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      background: #ff4d6d;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 20px rgba(255,77,109,0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 0 25px rgba(255,77,109,0.9);
     }
   </style>
 </head>
 <body>
 
-  <!-- Floating paws + hearts -->
-  <div class="float" style="left:10%;">🐾</div>
-  <div class="float" style="left:30%; animation-delay:3s;">💖</div>
-  <div class="float" style="left:50%; animation-delay:6s;">🐾</div>
-  <div class="float" style="left:70%; animation-delay:9s;">✨</div>
-  <div class="float" style="left:85%; animation-delay:12s;">🎀</div>
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
 
-  <!-- Sections -->
+  <!-- Loading -->
   <div id="loading" class="section active">
-    <h2>Loading... 🐾✨</h2>
+    <h2>Loading... 🐾</h2>
+    <div class="float" style="left:10%;">🐾</div>
+    <div class="float" style="left:30%; animation-delay:3s;">💖</div>
+    <div class="float" style="left:50%; animation-delay:6s;">✨</div>
+    <div class="float" style="left:70%; animation-delay:9s;">🐾</div>
+    <div class="float" style="left:85%; animation-delay:12s;">💖</div>
   </div>
 
+  <!-- Intro -->
   <div id="intro" class="section">
     <h1>Happy Birthday Vaidehi 🎉</h1>
-    <h2>You're so monnuuu 😏😏</h2>
-    <button onclick="nextSection('gallery')">Enter 💖</button>
-    <audio id="bg-music" loop>
-      <source src="music.mp3" type="audio/mpeg">
-    </audio>
+    <p>You’re so monnuuu 😏😏</p>
+    <button id="enter-btn">Enter</button>
   </div>
 
+  <!-- Gallery -->
   <div id="gallery" class="section">
     <h2>💖 Memories with You 💖</h2>
-    <div id="gallery">
-      <img src="photo1.jpg" alt="memory 1">
-      <img src="photo2.jpg" alt="memory 2">
-      <img src="photo3.jpg" alt="memory 3">
-      <img src="photo4.jpg" alt="memory 4">
+    <div id="photos">
+      <img src="photo1.jpg" alt="memory1">
+      <img src="photo2.jpg" alt="memory2">
+      <img src="photo3.jpg" alt="memory3">
+      <img src="photo4.jpg" alt="memory4">
     </div>
-    <button onclick="nextSection('cat-game')">Next 🐱</button>
+    <button class="btn" onclick="nextSection('game1')">Next ➡️</button>
   </div>
 
-  <div id="cat-game" class="section">
-    <h2>🐱 Find the Cat! 🐾</h2>
-    <p>Tap the animals to find the hidden cat!</p>
-    <div class="animals" id="animal-container"></div>
-    <p id="cat-result"></p>
+  <!-- Game 1: Find the Cat -->
+  <div id="game1" class="section game">
+    <h2>🐱 Find the Hidden Cat 🐱</h2>
+    <p>Tap the 🐱 before time runs out!</p>
+    <div id="cat-area"></div>
+    <p id="cat-timer">⏳ Time left: 15s</p>
   </div>
 
-  <div id="balloon-game" class="section">
+  <!-- Game 2: Pop the Balloon -->
+  <div id="game2" class="section game">
     <h2>🎈 Pop the Balloons 🎈</h2>
-    <p>One of them hides a surprise!</p>
-    <div id="balloon-container"></div>
+    <p>One balloon has a surprise…</p>
+    <div id="balloon-area"></div>
   </div>
 
-  <div id="message" class="section">
-    <h2>💌 A Special Note 💌</h2>
-    <p id="final-message"></p>
+  <!-- Final Message -->
+  <div id="final" class="section">
+    <div id="message">
+      <h2>💌 A Special Note 💌</h2>
+      <p>
+Happy birthday monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
+Something cuddly and glowing just like you🥺 ik you’re always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 don’t lose your hope and live your life.  
+
+Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad) 💕  
+
+Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
+      </p>
+    </div>
   </div>
 
-  <script>
-    // Switch sections
-    function nextSection(id) {
-      document.querySelectorAll(".section").forEach(sec => sec.classList.remove("active"));
-      document.getElementById(id).classList.add("active");
-      window.scrollTo(0,0);
-
-      if(id === "intro") {
-        document.getElementById("bg-music").play();
-      }
-      if(id === "cat-game") setupCatGame();
-      if(id === "balloon-game") setupBalloonGame();
-      if(id === "message") typeMessage();
-    }
-
-    // Loading screen auto → intro
-    window.addEventListener("DOMContentLoaded", () => {
-      setTimeout(() => nextSection("intro"), 2000);
+<script>
+  // Show section helper
+  function showSection(id) {
+    document.querySelectorAll(".section").forEach(sec => {
+      sec.classList.remove("active");
     });
+    document.getElementById(id).classList.add("active");
+  }
 
-    // Cat game
-    function setupCatGame() {
-      const animals = ["🐶","🐰","🐻","🐼","🐸","🐵","🦊","🐯","🐱"];
-      const container = document.getElementById("animal-container");
-      container.innerHTML = "";
-      const catIndex = Math.floor(Math.random() * animals.length);
-      animals.forEach((animal, i) => {
-        const span = document.createElement("span");
-        span.classList.add("animal");
-        span.textContent = animal;
-        span.onclick = () => {
-          if(i === catIndex) {
-            document.getElementById("cat-result").textContent = "Yay! You found the cat 🐱💖";
-            setTimeout(()=> nextSection("balloon-game"), 1500);
-          } else {
-            document.getElementById("cat-result").textContent = "Nope, try again 😏";
-          }
-        };
-        container.appendChild(span);
+  // Start after loading
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => { showSection("intro"); }, 2000);
+  });
+
+  // Enter button
+  document.getElementById("enter-btn").onclick = () => {
+    document.getElementById("bg-music").play();
+    showSection("gallery");
+  };
+
+  // Gallery -> next
+  function nextSection(id) { showSection(id); if(id==="game1") startGame1(); }
+
+  // Game 1: Find the Cat
+  function startGame1() {
+    let area = document.getElementById("cat-area");
+    let timerDisplay = document.getElementById("cat-timer");
+    let timeLeft = 15, interval, timer;
+
+    function spawnAnimals() {
+      area.innerHTML = "";
+      let animals = ["🐶","🐰","🦊","🐸","🐷","🐵","🐱"];
+      animals.sort(() => 0.5 - Math.random());
+      animals.forEach(animal => {
+        let el = document.createElement("div");
+        el.classList.add("animal");
+        el.innerHTML = animal;
+        el.style.top = Math.random()*200+"px";
+        el.style.left = Math.random()*80+"%";
+        if(animal==="🐱"){
+          el.onclick=()=>{
+            clearInterval(interval);clearInterval(timer);
+            alert("🎉 You found the cat!");
+            showSection("game2"); startGame2();
+          };
+        }
+        area.appendChild(el);
       });
     }
 
-    // Balloon game
-    function setupBalloonGame() {
-      const container = document.getElementById("balloon-container");
-      container.innerHTML = "";
-      for(let i=0;i<7;i++) {
-        const b = document.createElement("div");
-        b.classList.add("balloon");
-        b.style.left = Math.random()*80 + "%";
-        b.style.animationDelay = (Math.random()*5)+"s";
-        b.textContent = "🎈";
-        b.onclick = () => {
-          b.textContent = "✨";
-          b.style.pointerEvents = "none";
-          if(i===3) { // special balloon
-            setTimeout(()=> nextSection("message"),1000);
-          }
-        };
-        container.appendChild(b);
+    interval=setInterval(spawnAnimals,2000);
+    spawnAnimals();
+
+    timer=setInterval(()=>{
+      timeLeft--;
+      timerDisplay.textContent="⏳ Time left: "+timeLeft+"s";
+      if(timeLeft<=0){
+        clearInterval(interval);clearInterval(timer);
+        alert("😢 Time’s up! Try again!");
+        startGame1();
       }
+    },1000);
+  }
+
+  // Game 2: Balloon Pop
+  function startGame2() {
+    let area=document.getElementById("balloon-area");
+    area.innerHTML="";
+    for(let i=0;i<8;i++){
+      let b=document.createElement("div");
+      b.classList.add("balloon");
+      b.innerHTML="🎈";
+      b.style.left=Math.random()*80+"%";
+      b.style.bottom="-50px";
+      b.style.animationDuration=(4+Math.random()*3)+"s";
+      b.onclick=()=>{
+        if(i===3){
+          alert("✨ Surprise revealed! ✨");
+          showSection("final");
+        } else {
+          b.remove();
+        }
+      };
+      area.appendChild(b);
     }
-
-    // Final message typing effect
-    const msg = `Happy birthday monnuuu 🥺😏😏, and yeah this is just the trailer 😏 vakki ithokke kazhinj varanond 😁. 
-Something cuddly and glowing just like you 🥺 ik youre always troubled by stuff and overthink a lot and that nee monnaya 😏 just know that me here for you 😏😏 don’t lose your hope and live your life. 
-Most importantly, try your best to always stay positive 😏 (you have a pretty nice bf so why be sad) 💕  
-
-Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉`;
-
-    function typeMessage() {
-      const el = document.getElementById("final-message");
-      el.textContent = "";
-      let i=0;
-      const typer = setInterval(()=>{
-        el.textContent += msg[i];
-        i++;
-        if(i>=msg.length) clearInterval(typer);
-      }, 50);
-    }
-  </script>
+  }
+</script>
 </body>
 </html>
