@@ -5,225 +5,253 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Happy Birthday Vaidehi 🎉</title>
   <style>
-    body {
+    body, html {
       margin: 0;
-      font-family: 'Arial', sans-serif;
-      background: #ffe6f0;
-      text-align: center;
+      padding: 0;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background: #fff0f6;
       overflow-x: hidden;
     }
-    section { padding: 40px 20px; }
-    h1, h2 { color: #d63384; margin-bottom: 20px; }
-    button {
-      padding: 12px 25px;
-      font-size: 1rem;
-      background: #ff4da6;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-    }
-    button:hover { background: #e60073; }
 
     /* Loading screen */
     #loading {
       position: fixed;
       top: 0; left: 0;
       width: 100%; height: 100%;
-      background: #fff0f5;
+      background: #ffdde1;
       display: flex;
-      justify-content: center;
       align-items: center;
+      justify-content: center;
       flex-direction: column;
       z-index: 9999;
     }
-    .paw {
-      font-size: 2rem;
-      animation: bounce 0.8s infinite alternate;
+    #loading h2 {
+      color: #ff4d6d;
+      animation: pulse 1.5s infinite;
     }
-    @keyframes bounce {
-      from { transform: translateY(0); }
-      to { transform: translateY(-20px); }
+
+    /* Intro screen */
+    #intro {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(135deg, #ffb3c6, #ffdde1);
+      text-align: center;
+    }
+    #intro h1 {
+      font-size: 2.2rem;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 5px #00000033;
+    }
+    #enter-btn {
+      padding: 0.8rem 2rem;
+      font-size: 1.2rem;
+      background: #ff4d6d;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff4d6d;
+      transition: transform 0.3s ease;
+    }
+    #enter-btn:hover {
+      transform: scale(1.1);
+    }
+
+    /* Main content */
+    #main-content {
+      display: none;
+      padding: 1rem;
+      animation: fadeIn 2s ease forwards;
     }
 
     /* Gallery */
-    .gallery {
+    #gallery {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-      gap: 10px;
-      margin-top: 20px;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+      margin: 2rem 0;
     }
-    .gallery img {
+    #gallery img {
       width: 100%;
       border-radius: 15px;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.5s ease, opacity 0.5s ease;
+    }
+    #gallery img:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
     }
 
-    /* Memory Game */
-    .game-board {
-      display: grid;
-      grid-template-columns: repeat(4, 70px);
-      gap: 10px;
-      justify-content: center;
-      margin-top: 20px;
+    /* Puzzle teaser */
+    #puzzle {
+      text-align: center;
+      margin: 2rem 0;
     }
-    .card {
-      width: 70px;
-      height: 70px;
-      background: #fff;
-      border-radius: 10px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-size: 1.5rem;
+    #puzzle button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 30px;
+      background: #ff4d6d;
+      color: #fff;
+      font-size: 1.2rem;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-      user-select: none;
+      box-shadow: 0 0 15px rgba(255,77,109,0.6);
+      transition: transform 0.3s ease;
     }
-    .flipped { background: #ffb3d9; }
-    .hidden { visibility: hidden; }
+    #puzzle button:hover {
+      transform: scale(1.1);
+    }
 
-    /* Teaser */
-    #teaser {
-      margin-top: 30px;
-      font-size: 1rem;
+    /* Message button + final message */
+    #message-button {
+      text-align: center;
+      margin: 2rem;
+    }
+    #message-button button {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      background: #ff4d6d;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255,77,109,0.6);
+      transition: transform 0.3s ease;
+    }
+    #message-button button:hover {
+      transform: scale(1.1);
+    }
+    #message {
+      padding: 2rem;
+      text-align: center;
+      background: linear-gradient(135deg, #fff0f6, #ffe5ec);
+      border-radius: 20px;
+      margin: 2rem;
+      box-shadow: 0 0 20px rgba(255,105,180,0.3);
+      animation: fadeIn 2s ease forwards;
+    }
+    #message h2 {
+      font-size: 2rem;
+      color: #ff4d6d;
+      margin-bottom: 1rem;
+    }
+    #message p {
+      font-size: 1.1rem;
       color: #333;
-      display: none;
+      line-height: 1.6;
+      white-space: pre-line;
     }
-    #mystery {
-      font-size: 3rem;
-      animation: glow 1.5s infinite alternate;
+
+    .hidden { display: none; }
+
+    /* Floating paws */
+    .paw {
+      position: fixed;
+      font-size: 2rem;
+      opacity: 0.5;
+      animation: floatPaw 12s linear infinite;
+      bottom: -5%;
     }
-    @keyframes glow {
-      from { text-shadow: 0 0 5px #ff4da6; }
-      to { text-shadow: 0 0 20px #ff99cc; }
+    @keyframes floatPaw {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
   </style>
 </head>
 <body>
-  <!-- Loading Screen -->
+
+  <!-- Loading screen -->
   <div id="loading">
-    <div class="paw">🐾</div>
-    <p>Getting ready for your surprise...</p>
+    <h2>Loading... 🐾</h2>
   </div>
 
-  <!-- Landing -->
-  <section>
-    <h1>🐱 Happy Birthday Vaidehi 🎂</h1>
-    <p>Tap below to begin your surprise journey 🎉</p>
-    <button onclick="startExperience()">🐾 Enter</button>
-  </section>
+  <!-- Intro -->
+  <div id="intro">
+    <h1>Happy Birthday Vaidehi 🎉</h1>
+    <button id="enter-btn">Enter</button>
+  </div>
 
-  <!-- Gallery -->
-  <section>
-    <h2>📸 Our Memories</h2>
-    <div class="gallery">
-      <img src="photo1.jpg" alt="Memory 1">
-      <img src="photo2.jpg" alt="Memory 2">
-      <img src="photo3.jpg" alt="Memory 3">
-      <img src="photo4.jpg" alt="Memory 4">
-      <img src="photo5.jpg" alt="Memory 5">
-      <img src="photo6.jpg" alt="Memory 6">
+  <!-- Main content -->
+  <div id="main-content">
+    <h2 style="text-align:center; color:#ff4d6d;">💖 Memories with You 💖</h2>
+    <div id="gallery">
+      <img src="image1.jpg" alt="memory 1">
+      <img src="image2.jpg" alt="memory 2">
+      <img src="image3.jpg" alt="memory 3">
+      <img src="image4.jpg" alt="memory 4">
     </div>
-  </section>
 
-  <!-- Puzzle Game -->
-  <section>
-    <h2>🧩 Memory Flip Game</h2>
-    <p>Match all the pairs to unlock a surprise teaser!</p>
-    <div class="game-board" id="board"></div>
-    <div id="teaser">
-      <div id="mystery">🎁✨</div>
-      <p>Well done, Vaidehi! 🌸<br>
-      Your surprise is soft, cuddly, and it glows…  
-      but you’ll have to wait to meet it 🐾💡</p>
+    <div id="puzzle">
+      <h2>🎁 Solve this for a Teaser 🎁</h2>
+      <button onclick="revealTeaser()">Click to Reveal</button>
+      <p id="teaser" class="hidden">✨ Something soft, cuddly, and glowing is waiting for you... but shhh 🤫 it’s a surprise! ✨</p>
     </div>
-  </section>
 
-  <!-- Background Music -->
-  <audio id="bg-music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+    <!-- Button for final message -->
+    <div id="message-button" class="hidden">
+      <button onclick="showMessage()">💌 See your message 💌</button>
+    </div>
 
-  <!-- Confetti + Game Script -->
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+    <!-- Final message -->
+    <section id="message" class="hidden">
+      <h2>💖 A Special Note 💖</h2>
+      <p>
+        Happy birthday "monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
+        Something cuddly and glowing just like you🥺 ik youre always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 don’t lose your hope and live your life.  
+        Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad) 💕  
+
+        Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
+      </p>
+    </section>
+  </div>
+
+  <!-- Floating paws -->
+  <div class="paw" style="left:10%;">🐾</div>
+  <div class="paw" style="left:30%; animation-delay:3s;">🐾</div>
+  <div class="paw" style="left:50%; animation-delay:6s;">🐾</div>
+  <div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
+  <div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
+
   <script>
-    // Hide loading after 2s
-    window.onload = () => {
+    // Loading screen timeout
+    window.onload = function() {
       setTimeout(() => {
         document.getElementById("loading").style.display = "none";
-      }, 2000);
+        document.getElementById("intro").style.display = "flex";
+      }, 1500);
     };
 
-    function startExperience() {
-      startConfetti();
-      document.getElementById("bg-music").play();
+    // Enter button -> reveal main content
+    document.getElementById("enter-btn").onclick = function() {
+      document.getElementById("intro").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
+    };
+
+    // Puzzle teaser
+    function revealTeaser() {
+      document.getElementById("teaser").classList.remove("hidden");
+      document.getElementById("message-button").classList.remove("hidden");
     }
 
-    function startConfetti() {
-      let duration = 3 * 1000;
-      let end = Date.now() + duration;
-      (function frame() {
-        confetti();
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      }());
-    }
-
-    // Memory Game
-    const icons = ["🎂","🎂","🎈","🎈","🎉","🎉","🐱","🐱"];
-    let firstCard = null;
-    let lock = false;
-    let matches = 0;
-
-    // shuffle
-    icons.sort(() => 0.5 - Math.random());
-
-    const board = document.getElementById("board");
-    icons.forEach(icon => {
-      const card = document.createElement("div");
-      card.className = "card";
-      card.dataset.icon = icon;
-      card.addEventListener("click", flipCard);
-      board.appendChild(card);
-    });
-
-    function flipCard(e) {
-      if (lock) return;
-      const card = e.target;
-      if (card.classList.contains("flipped")) return;
-
-      card.classList.add("flipped");
-      card.textContent = card.dataset.icon;
-
-      if (!firstCard) {
-        firstCard = card;
-      } else {
-        if (firstCard.dataset.icon === card.dataset.icon) {
-          setTimeout(() => {
-            firstCard.classList.add("hidden");
-            card.classList.add("hidden");
-            matches++;
-            if (matches === icons.length / 2) showTeaser();
-            firstCard = null;
-          }, 400);
-        } else {
-          lock = true;
-          setTimeout(() => {
-            firstCard.classList.remove("flipped");
-            firstCard.textContent = "";
-            card.classList.remove("flipped");
-            card.textContent = "";
-            firstCard = null;
-            lock = false;
-          }, 700);
-        }
-      }
-    }
-
-    function showTeaser() {
-      document.getElementById("teaser").style.display = "block";
+    // Show final message
+    function showMessage() {
+      document.getElementById("message").classList.remove("hidden");
+      document.getElementById("message-button").classList.add("hidden");
+      window.scrollTo(0, document.body.scrollHeight);
     }
   </script>
 </body>
