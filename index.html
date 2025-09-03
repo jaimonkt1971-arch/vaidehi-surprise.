@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Vaidehi 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background: #ffe6f0;
+      text-align: center;
+      overflow-x: hidden;
+    }
+    section { padding: 40px 20px; }
+    h1, h2 { color: #d63384; margin-bottom: 20px; }
+    button {
+      padding: 12px 25px;
+      font-size: 1rem;
+      background: #ff4da6;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+    }
+    button:hover { background: #e60073; }
+
+    /* Loading screen */
+    #loading {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: #fff0f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+    .paw {
+      font-size: 2rem;
+      animation: bounce 0.8s infinite alternate;
+    }
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to { transform: translateY(-20px); }
+    }
+
+    /* Gallery */
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+      margin-top: 20px;
+    }
+    .gallery img {
+      width: 100%;
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* Memory Game */
+    .game-board {
+      display: grid;
+      grid-template-columns: repeat(4, 70px);
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .card {
+      width: 70px;
+      height: 70px;
+      background: #fff;
+      border-radius: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      user-select: none;
+    }
+    .flipped { background: #ffb3d9; }
+    .hidden { visibility: hidden; }
+
+    /* Teaser */
+    #teaser {
+      margin-top: 30px;
+      font-size: 1rem;
+      color: #333;
+      display: none;
+    }
+    #mystery {
+      font-size: 3rem;
+      animation: glow 1.5s infinite alternate;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 5px #ff4da6; }
+      to { text-shadow: 0 0 20px #ff99cc; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Loading Screen -->
+  <div id="loading">
+    <div class="paw">🐾</div>
+    <p>Getting ready for your surprise...</p>
+  </div>
+
+  <!-- Landing -->
+  <section>
+    <h1>🐱 Happy Birthday Vaidehi 🎂</h1>
+    <p>Tap below to begin your surprise journey 🎉</p>
+    <button onclick="startExperience()">🐾 Enter</button>
+  </section>
+
+  <!-- Gallery -->
+  <section>
+    <h2>📸 Our Memories</h2>
+    <div class="gallery">
+      <img src="photo1.jpg" alt="Memory 1">
+      <img src="photo2.jpg" alt="Memory 2">
+      <img src="photo3.jpg" alt="Memory 3">
+      <img src="photo4.jpg" alt="Memory 4">
+      <img src="photo5.jpg" alt="Memory 5">
+      <img src="photo6.jpg" alt="Memory 6">
+    </div>
+  </section>
+
+  <!-- Puzzle Game -->
+  <section>
+    <h2>🧩 Memory Flip Game</h2>
+    <p>Match all the pairs to unlock a surprise teaser!</p>
+    <div class="game-board" id="board"></div>
+    <div id="teaser">
+      <div id="mystery">🎁✨</div>
+      <p>Well done, Vaidehi! 🌸<br>
+      Your surprise is soft, cuddly, and it glows…  
+      but you’ll have to wait to meet it 🐾💡</p>
+    </div>
+  </section>
+
+  <!-- Background Music -->
+  <audio id="bg-music" loop>
+    <source src="music.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Confetti + Game Script -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <script>
+    // Hide loading after 2s
+    window.onload = () => {
+      setTimeout(() => {
+        document.getElementById("loading").style.display = "none";
+      }, 2000);
+    };
+
+    function startExperience() {
+      startConfetti();
+      document.getElementById("bg-music").play();
+    }
+
+    function startConfetti() {
+      let duration = 3 * 1000;
+      let end = Date.now() + duration;
+      (function frame() {
+        confetti();
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    // Memory Game
+    const icons = ["🎂","🎂","🎈","🎈","🎉","🎉","🐱","🐱"];
+    let firstCard = null;
+    let lock = false;
+    let matches = 0;
+
+    // shuffle
+    icons.sort(() => 0.5 - Math.random());
+
+    const board = document.getElementById("board");
+    icons.forEach(icon => {
+      const card = document.createElement("div");
+      card.className = "card";
+      card.dataset.icon = icon;
+      card.addEventListener("click", flipCard);
+      board.appendChild(card);
+    });
+
+    function flipCard(e) {
+      if (lock) return;
+      const card = e.target;
+      if (card.classList.contains("flipped")) return;
+
+      card.classList.add("flipped");
+      card.textContent = card.dataset.icon;
+
+      if (!firstCard) {
+        firstCard = card;
+      } else {
+        if (firstCard.dataset.icon === card.dataset.icon) {
+          setTimeout(() => {
+            firstCard.classList.add("hidden");
+            card.classList.add("hidden");
+            matches++;
+            if (matches === icons.length / 2) showTeaser();
+            firstCard = null;
+          }, 400);
+        } else {
+          lock = true;
+          setTimeout(() => {
+            firstCard.classList.remove("flipped");
+            firstCard.textContent = "";
+            card.classList.remove("flipped");
+            card.textContent = "";
+            firstCard = null;
+            lock = false;
+          }, 700);
+        }
+      }
+    }
+
+    function showTeaser() {
+      document.getElementById("teaser").style.display = "block";
+    }
+  </script>
+</body>
+</html>
