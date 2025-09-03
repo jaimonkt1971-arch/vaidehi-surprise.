@@ -10,15 +10,18 @@
       padding: 0;
       font-family: "Comic Sans MS", cursive, sans-serif;
       background: #fff0f6;
-      overflow-x: hidden;
+      overflow: hidden;
     }
 
     .hidden { display: none; }
-    .fade-in {
-      animation: fadeIn 1s ease forwards;
+    .fade-in { animation: fadeIn 1.5s ease forwards; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
     }
 
-    /* Loading */
+    /* Loading screen */
     #loading {
       position: fixed;
       top: 0; left: 0;
@@ -34,8 +37,12 @@
       color: #ff4d6d;
       animation: pulse 1.5s infinite;
     }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
 
-    /* Intro */
+    /* Intro screen */
     #intro {
       display: none;
       flex-direction: column;
@@ -46,7 +53,7 @@
       text-align: center;
     }
     #intro h1 {
-      font-size: 2.2rem;
+      font-size: 2rem;
       color: #fff;
       margin-bottom: 1rem;
       text-shadow: 2px 2px 5px #00000033;
@@ -60,176 +67,124 @@
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 0 15px #ff4d6d;
-      transition: transform 0.3s ease;
-    }
-    #enter-btn:hover { transform: scale(1.1); }
-
-    /* Main */
-    #main-content {
-      display: none;
-      padding: 1rem;
     }
 
     /* Gallery */
     #gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    #gallery img {
-      width: 100%;
-      border-radius: 15px;
-      transition: transform 0.5s ease, opacity 0.5s ease;
-    }
-    #gallery img:hover {
-      transform: scale(1.05);
-      opacity: 0.9;
-    }
-
-    /* Games */
-    .game {
-      margin: 2rem 0;
       text-align: center;
-    }
-    .game h2 { color: #ff4d6d; }
-
-   <!-- Game 1 -->
-<div class="game" id="game1">
-  <h2>🐱 Find the Hidden Cat 🐱</h2>
-  <p>Tap the 🐱 before time runs out!</p>
-  <div id="cat-area"></div>
-  <p id="cat-timer">⏳ Time left: 15s</p>
-</div>
-
-<style>
-  #cat-area {
-    position: relative;
-    width: 100%;
-    height: 250px;
-    background: #ffe5ec;
-    border-radius: 15px;
-    overflow: hidden;
-  }
-  .animal {
-    position: absolute;
-    font-size: 2rem;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-  }
-  .animal:hover {
-    transform: scale(1.3);
-  }
-</style>
-
-<script>
-  function startGame1() {
-    let area = document.getElementById("cat-area");
-    let timerDisplay = document.getElementById("cat-timer");
-    let timeLeft = 15;
-    let interval, timer;
-
-    function spawnAnimals() {
-      area.innerHTML = "";
-      let animals = ["🐶","🐰","🦊","🐸","🐷","🐵","🐱"];
-      animals.sort(() => 0.5 - Math.random()); // shuffle
-      animals.forEach((animal) => {
-        let el = document.createElement("div");
-        el.classList.add("animal");
-        el.innerHTML = animal;
-        el.style.top = Math.random() * 200 + "px";
-        el.style.left = Math.random() * 80 + "%";
-
-        if (animal === "🐱") {
-          el.onclick = () => {
-            clearInterval(interval);
-            clearInterval(timer);
-            alert("🎉 You found the cat in time! 🐾");
-            document.getElementById("game1").classList.add("hidden");
-            document.getElementById("game2").classList.remove("hidden");
-            document.getElementById("game2").classList.add("fade-in");
-            startGame2();
-          };
-        }
-        area.appendChild(el);
-      });
-    }
-
-    // spawn new animals every 2 seconds
-    interval = setInterval(spawnAnimals, 2000);
-    spawnAnimals();
-
-    // countdown timer
-    timer = setInterval(() => {
-      timeLeft--;
-      timerDisplay.textContent = `⏳ Time left: ${timeLeft}s`;
-      if (timeLeft <= 0) {
-        clearInterval(interval);
-        clearInterval(timer);
-        alert("😢 Time’s up! The cat ran away… Try again?");
-        startGame1(); // restart
-      }
-    }, 1000);
-  }
-</script>
-    /* Balloon Pop */
-    #balloon-area {
-      position: relative;
-      height: 200px;
-      background: #fff5f7;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-    .balloon {
-      position: absolute;
-      bottom: -50px;
-      font-size: 2rem;
-      cursor: pointer;
-      animation: floatUp 6s linear forwards;
-    }
-    @keyframes floatUp {
-      from { bottom: -50px; }
-      to { bottom: 220px; }
-    }
-
-    /* Memory Game */
-    #memory-game {
-      display: grid;
-      grid-template-columns: repeat(2, 100px);
-      gap: 1rem;
-      justify-content: center;
-    }
-    .card {
-      width: 100px;
-      height: 100px;
-      background: #ffb3c6;
+      height: 100vh;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 2rem;
-      cursor: pointer;
+      background: #ffe5ec;
+    }
+    #gallery h2 {
+      color: #ff4d6d;
+    }
+    #photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 0.5rem;
+      margin: 1rem;
+    }
+    #photos img {
+      width: 100%;
       border-radius: 10px;
     }
 
-    /* Teaser + Message */
-    #teaser, #message {
-      padding: 2rem;
+    .next-btn {
+      margin-top: 1rem;
+      padding: 0.8rem 2rem;
+      font-size: 1rem;
+      background: #ff4d6d;
+      color: #fff;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(255,77,109,0.6);
+    }
+
+    /* Cat game */
+    #game1 {
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #fff0f6;
+    }
+    #cat-area {
+      position: relative;
+      width: 90%;
+      height: 250px;
+      background: #ffe5ec;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .animal {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .animal:hover { transform: scale(1.3); }
+
+    /* Balloon game */
+    #game2 {
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ffdde1;
+    }
+    .balloon {
+      font-size: 2rem;
+      cursor: pointer;
+      margin: 0.5rem;
+    }
+
+    /* Memory game */
+    #game3 {
+      text-align: center;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: #ffe5ec;
+    }
+    .card {
+      display: inline-block;
+      width: 60px; height: 60px;
+      background: #ff4d6d;
+      margin: 5px;
+      border-radius: 10px;
+      font-size: 2rem;
+      line-height: 60px;
+      color: white;
+      cursor: pointer;
+    }
+
+    /* Final message */
+    #message {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
       text-align: center;
       background: linear-gradient(135deg, #fff0f6, #ffe5ec);
-      border-radius: 20px;
-      margin: 2rem;
-      box-shadow: 0 0 20px rgba(255,105,180,0.3);
+      padding: 1rem;
     }
-    #message h2 {
-      font-size: 2rem;
-      color: #ff4d6d;
-      margin-bottom: 1rem;
-    }
+    #message h2 { color: #ff4d6d; }
     #message p {
-      font-size: 1.1rem;
-      color: #333;
-      line-height: 1.6;
+      max-width: 500px;
       white-space: pre-line;
+      color: #333;
     }
 
     /* Floating paws */
@@ -246,199 +201,201 @@
       80% { opacity: 1; }
       100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
     }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 0.7; }
-      50% { opacity: 1; }
-    }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
   </style>
 </head>
 <body>
 
-  <!-- Background music -->
-  <audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+<audio id="bgMusic" autoplay loop>
+  <source src="music.mp3" type="audio/mpeg">
+</audio>
 
-  <!-- Loading screen -->
-  <div id="loading">
-    <h2>Loading... 🐾</h2>
+<!-- Loading -->
+<div id="loading"><h2>Loading... 🐾</h2></div>
+
+<!-- Intro -->
+<div id="intro" class="hidden">
+  <h1>Happy Birthday Vaidehi 🎉</h1>
+  <button id="enter-btn">Enter</button>
+</div>
+
+<!-- Gallery -->
+<div id="gallery" class="hidden">
+  <h2>💖 Memories with You 💖</h2>
+  <div id="photos">
+    <img src="photo1.jpg" alt="memory">
+    <img src="photo2.jpg" alt="memory">
+    <img src="photo3.jpg" alt="memory">
+    <img src="photo4.jpg" alt="memory">
   </div>
+  <button class="next-btn" onclick="nextToGame1()">Next ➡️</button>
+</div>
 
-  <!-- Intro -->
-  <div id="intro" class="hidden">
-    <h1>Happy Birthday Vaidehi 🎉</h1>
-    <button id="enter-btn" onclick="startExperience()">Enter</button>
+<!-- Game 1: Find the Cat -->
+<div id="game1" class="hidden">
+  <h2>🐱 Find the Hidden Cat 🐱</h2>
+  <p>Tap the 🐱 before time runs out!</p>
+  <div id="cat-area"></div>
+  <p id="cat-timer">⏳ Time left: 15s</p>
+</div>
+
+<!-- Game 2: Balloon Pop -->
+<div id="game2" class="hidden">
+  <h2>🎈 Pop the Balloons 🎈</h2>
+  <div id="balloon-area">
+    <span class="balloon">🎈</span>
+    <span class="balloon">🎈</span>
+    <span class="balloon">🎈</span>
+    <span class="balloon">🎈</span>
   </div>
+</div>
 
-  <!-- Main -->
-  <div id="main-content">
-    <h2 style="text-align:center; color:#ff4d6d;">💖 Memories with You 💖</h2>
-    <div id="gallery">
-      <img src="photo1.jpg" alt="memory 1">
-      <img src="photo2.jpg" alt="memory 2">
-      <img src="photo3.jpg" alt="memory 3">
-      <img src="photo4.jpg" alt="memory 4">
-    </div>
-
-    <!-- Game 1 -->
-    <div class="game" id="game1">
-      <h2>🐱 Find the Hidden Cat 🐱</h2>
-      <div id="cat-area"></div>
-    </div>
-
-    <!-- Game 2 -->
-    <div class="game hidden" id="game2">
-      <h2>🎈 Pop the Balloons 🎈</h2>
-      <div id="balloon-area"></div>
-    </div>
-
-    <!-- Game 3 -->
-    <div class="game hidden" id="game3">
-      <h2>🃏 Memory Match 🃏</h2>
-      <div id="memory-game"></div>
-    </div>
-
-    <!-- Teaser -->
-    <div id="teaser" class="hidden fade-in">
-      <h2>🎁 A Teaser 🎁</h2>
-      <p>✨ Something soft, cuddly, and glowing is waiting for you... but shhh 🤫 it’s a surprise! ✨</p>
-      <button onclick="showMessage()">💌 See your message 💌</button>
-    </div>
-
-    <!-- Final Message -->
-    <section id="message" class="hidden fade-in">
-      <h2>💖 A Special Note 💖</h2>
-      <p>
-        Happy birthday "monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
-        Something cuddly and glowing just like you🥺 ik youre always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 don’t lose your hope and live your life.  
-        Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad) 💕  
-
-        Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
-      </p>
-    </section>
+<!-- Game 3: Memory -->
+<div id="game3" class="hidden">
+  <h2>🃏 Memory Match 🃏</h2>
+  <div id="cards">
+    <div class="card">?</div>
+    <div class="card">?</div>
+    <div class="card">?</div>
+    <div class="card">?</div>
   </div>
+</div>
 
-  <!-- Floating paws -->
-  <div class="paw" style="left:10%;">🐾</div>
-  <div class="paw" style="left:30%; animation-delay:3s;">🐾</div>
-  <div class="paw" style="left:50%; animation-delay:6s;">🐾</div>
-  <div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
-  <div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
+<!-- Final Message -->
+<div id="message" class="hidden">
+  <h2>💖 A Special Note 💖</h2>
+  <p>
+Happy birthday "monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
+Something cuddly and glowing just like you🥺 ik youre always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 don’t lose your hope and live your life.  
+Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad) 💕  
 
-  <script>
-    // Loading
-    window.onload = function() {
-      setTimeout(() => {
-        document.getElementById("loading").style.display = "none";
-        document.getElementById("intro").style.display = "flex";
-      }, 1500);
-    };
+Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
+  </p>
+</div>
 
-    function startExperience() {
-      document.getElementById("intro").classList.add("hidden");
-      document.getElementById("main-content").style.display = "block";
-      let music = document.getElementById("bgMusic");
-      if (music) music.play().catch(()=>{});
-      startGame1();
-    }
+<!-- Floating paws -->
+<div class="paw" style="left:10%;">🐾</div>
+<div class="paw" style="left:30%; animation-delay:3s;">🐾</div>
+<div class="paw" style="left:50%; animation-delay:6s;">🐾</div>
+<div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
+<div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
 
-    // Game 1
-    function startGame1() {
-      let area = document.getElementById("cat-area");
+<script>
+  // Loading → Intro
+  window.onload = function() {
+    setTimeout(() => {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("intro").style.display = "flex";
+    }, 1500);
+  };
+
+  // Intro → Gallery
+  document.getElementById("enter-btn").onclick = function() {
+    document.getElementById("intro").classList.add("hidden");
+    document.getElementById("gallery").classList.remove("hidden");
+    document.getElementById("gallery").classList.add("fade-in");
+    document.getElementById("bgMusic").play().catch(()=>{});
+  };
+
+  // Gallery → Cat Game
+  function nextToGame1() {
+    document.getElementById("gallery").classList.add("hidden");
+    document.getElementById("game1").classList.remove("hidden");
+    startGame1();
+  }
+
+  // Cat Game
+  function startGame1() {
+    let area = document.getElementById("cat-area");
+    let timerDisplay = document.getElementById("cat-timer");
+    let timeLeft = 15;
+    let interval, timer;
+
+    function spawnAnimals() {
       area.innerHTML = "";
-      let cat = document.createElement("div");
-      cat.classList.add("cat");
-      cat.innerHTML = "🐱";
-      cat.style.top = Math.random() * 150 + "px";
-      cat.style.left = Math.random() * 80 + "%";
-      cat.onclick = () => {
-        alert("You found the cat! 🐾");
-        document.getElementById("game1").classList.add("hidden");
-        document.getElementById("game2").classList.remove("hidden");
-        document.getElementById("game2").classList.add("fade-in");
-        startGame2();
-      };
-      area.appendChild(cat);
-    }
-
-    // Game 2
-    function startGame2() {
-      let area = document.getElementById("balloon-area");
-      area.innerHTML = "";
-      for (let i = 0; i < 5; i++) {
-        let b = document.createElement("div");
-        b.classList.add("balloon");
-        b.innerHTML = "🎈";
-        b.style.left = (i * 15 + 20) + "%";
-        b.style.animationDelay = (i * 1.5) + "s";
-        b.onclick = () => {
-          b.innerHTML = "💥";
-          setTimeout(() => {
-            if (i === 2) {
-              alert("You popped the special balloon! 🎉");
-              document.getElementById("game2").classList.add("hidden");
-              document.getElementById("game3").classList.remove("hidden");
-              document.getElementById("game3").classList.add("fade-in");
-              startGame3();
-            }
-          }, 300);
-        };
-        area.appendChild(b);
-      }
-    }
-
-    // Game 3
-    function startGame3() {
-      let emojis = ["🐱","🐱","🎈","🎈"];
-      emojis.sort(() => 0.5 - Math.random());
-      let board = document.getElementById("memory-game");
-      board.innerHTML = "";
-      let first = null, second = null, matched = 0;
-      emojis.forEach((em) => {
-        let card = document.createElement("div");
-        card.classList.add("card");
-        card.dataset.value = em;
-        card.innerHTML = "❓";
-        card.onclick = () => {
-          if (card.innerHTML !== "❓" || second) return;
-          card.innerHTML = em;
-          if (!first) {
-            first = card;
-          } else {
-            second = card;
-            setTimeout(() => {
-              if (first.dataset.value === second.dataset.value) {
-                matched += 2;
-                if (matched === emojis.length) {
-                  alert("All pairs matched! 🎊");
-                  document.getElementById("game3").classList.add("hidden");
-                  document.getElementById("teaser").classList.remove("hidden");
-                  document.getElementById("teaser").classList.add("fade-in");
-                }
-              } else {
-                first.innerHTML = "❓";
-                second.innerHTML = "❓";
-              }
-              first = null; second = null;
-            }, 800);
-          }
-        };
-        board.appendChild(card);
+      let animals = ["🐶","🐰","🦊","🐸","🐷","🐵","🐱"];
+      animals.sort(() => 0.5 - Math.random());
+      animals.forEach((animal) => {
+        let el = document.createElement("div");
+        el.classList.add("animal");
+        el.innerHTML = animal;
+        el.style.top = Math.random() * 200 + "px";
+        el.style.left = Math.random() * 80 + "%";
+        if (animal === "🐱") {
+          el.onclick = () => {
+            clearInterval(interval);
+            clearInterval(timer);
+            document.getElementById("game1").classList.add("hidden");
+            document.getElementById("game2").classList.remove("hidden");
+            startGame2();
+          };
+        }
+        area.appendChild(el);
       });
     }
 
-    function showMessage() {
-      document.getElementById("teaser").classList.add("hidden");
-      document.getElementById("message").classList.remove("hidden");
-      document.getElementById("message").classList.add("fade-in");
-      window.scrollTo(0, document.body.scrollHeight);
-    }
-  </script>
+    interval = setInterval(spawnAnimals, 2000);
+    spawnAnimals();
+
+    timer = setInterval(() => {
+      timeLeft--;
+      timerDisplay.textContent = `⏳ Time left: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(interval);
+        clearInterval(timer);
+        alert("😢 Time’s up! Try again!");
+        startGame1();
+      }
+    }, 1000);
+  }
+
+  // Balloon Game
+  function startGame2() {
+    let balloons = document.querySelectorAll("#balloon-area .balloon");
+    let popped = 0;
+    balloons.forEach((b, i) => {
+      b.onclick = () => {
+        b.textContent = "💥";
+        popped++;
+        if (popped === balloons.length) {
+          document.getElementById("game2").classList.add("hidden");
+          document.getElementById("game3").classList.remove("hidden");
+          startGame3();
+        }
+      };
+    });
+  }
+
+  // Memory Game
+  function startGame3() {
+    let cards = document.querySelectorAll("#cards .card");
+    let symbols = ["🐱","🐱","🎁","🎁"];
+    symbols.sort(() => 0.5 - Math.random());
+    let opened = [];
+    cards.forEach((c, i) => {
+      c.onclick = () => {
+        if (c.innerHTML === "?") {
+          c.innerHTML = symbols[i];
+          opened.push(c);
+          if (opened.length === 2) {
+            if (opened[0].innerHTML !== opened[1].innerHTML) {
+              setTimeout(() => {
+                opened[0].innerHTML = "?";
+                opened[1].innerHTML = "?";
+                opened = [];
+              }, 700);
+            } else {
+              opened = [];
+              if ([...cards].every(card => card.innerHTML !== "?")) {
+                document.getElementById("game3").classList.add("hidden");
+                document.getElementById("message").classList.remove("hidden");
+              }
+            }
+          }
+        }
+      };
+    });
+  }
+</script>
+
 </body>
 </html>
-
