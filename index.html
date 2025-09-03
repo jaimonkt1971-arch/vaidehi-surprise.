@@ -144,20 +144,7 @@
       position: absolute;
       font-size: 2rem;
       cursor: pointer;
-      transform-origin: center;
-      animation-fill-mode: forwards;
-    }
-    @keyframes sway {
-      0%   { transform: translateX(0); }
-      25%  { transform: translateX(-8px); }
-      50%  { transform: translateX(0); }
-      75%  { transform: translateX(8px); }
-      100% { transform: translateX(0); }
-    }
-    @keyframes pop {
-      0%   { transform: scale(1);   opacity: 1; }
-      70%  { transform: scale(1.25); opacity: 0.8; }
-      100% { transform: scale(0.2); opacity: 0; }
+      animation: floatUp 6s linear forwards;
     }
 
     /* Final Message */
@@ -334,24 +321,15 @@ Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
       b.innerHTML="🎈";
       b.style.left=Math.random()*80+"%";
       b.style.bottom="-50px";
-
-      // random float + sway
-      const rise = 8 + Math.random() * 6;      // 8–14s
-      const wobble = 2 + Math.random() * 2;    // 2–4s
-      b.style.animation = `floatUp ${rise}s linear forwards, sway ${wobble}s ease-in-out infinite`;
-
-      // click to pop
+      b.style.animationDuration=(4+Math.random()*3)+"s";
       b.onclick=()=>{
-        b.innerHTML="✨";
-        b.style.animation="pop 0.35s ease-out forwards";
-        b.addEventListener("animationend",()=>{
-          if(i===3){
-            showSection("final");
-          }
+        if(i===3){
+          alert("✨ Surprise revealed! ✨");
+          showSection("final");
+        } else {
           b.remove();
-        },{once:true});
+        }
       };
-
       area.appendChild(b);
     }
   }
