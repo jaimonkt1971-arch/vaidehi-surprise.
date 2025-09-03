@@ -13,105 +13,37 @@
       overflow: hidden;
     }
 
-    section {
+    .section {
       display: none;
+      opacity: 0;
+      transition: opacity 1s ease;
       height: 100vh;
       width: 100%;
+      text-align: center;
       justify-content: center;
       align-items: center;
       flex-direction: column;
-      text-align: center;
-      opacity: 0;
-      transition: opacity 1.5s ease;
     }
-
-    section.active {
+    .active {
       display: flex;
       opacity: 1;
     }
 
-    h1, h2 {
+    /* Loading screen */
+    #loading {
+      background: #ffdde1;
+      flex-direction: column;
+    }
+    #loading h2 {
       color: #ff4d6d;
-      text-shadow: 2px 2px 5px #00000033;
+      animation: pulse 1.5s infinite;
     }
-
-    button {
-      padding: 0.8rem 2rem;
-      font-size: 1.2rem;
-      background: #ff4d6d;
-      color: #fff;
-      border: none;
-      border-radius: 30px;
-      cursor: pointer;
-      margin-top: 1rem;
-      box-shadow: 0 0 15px rgba(255,77,109,0.6);
-      transition: transform 0.3s ease;
-    }
-    button:hover {
-      transform: scale(1.1);
-    }
-
-    /* Gallery */
-    #gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-      width: 80%;
-      margin-top: 2rem;
-    }
-    #gallery img {
-      width: 100%;
-      border-radius: 15px;
-      transition: transform 0.4s ease;
-    }
-    #gallery img:hover {
-      transform: scale(1.05);
-    }
-
-    /* Cat game */
-    #cat-game-area {
-      position: relative;
-      width: 80%;
-      height: 300px;
-      border: 2px dashed #ff4d6d;
-      border-radius: 20px;
-      overflow: hidden;
-      background: #ffe5ec;
-    }
-    .cat {
-      position: absolute;
-      font-size: 2rem;
-      cursor: pointer;
-      animation: moveCat 4s linear infinite;
-    }
-    @keyframes moveCat {
-      from { transform: translateX(-50px); }
-      to { transform: translateX(100%); }
-    }
-
-    /* Final message */
-    #message {
-      padding: 2rem;
-      width: 80%;
-      background: linear-gradient(135deg, #fff0f6, #ffe5ec);
-      border-radius: 20px;
-      box-shadow: 0 0 20px rgba(255,105,180,0.3);
-    }
-    #message p {
-      font-size: 1.1rem;
-      color: #333;
-      line-height: 1.6;
-      white-space: pre-line;
-    }
-
-    /* Floating paws */
     .paw {
       position: fixed;
       font-size: 2rem;
-      opacity: 0.5;
+      opacity: 0.6;
       animation: floatPaw 12s linear infinite;
       bottom: -5%;
-      z-index: -1;
     }
     @keyframes floatPaw {
       0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
@@ -119,146 +51,274 @@
       80% { opacity: 1; }
       100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
     }
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
+    }
+
+    /* Intro */
+    #intro {
+      background: linear-gradient(135deg, #ffb3c6, #ffdde1);
+      color: #fff;
+      text-shadow: 2px 2px 5px #00000033;
+    }
+    #intro h1 { font-size: 2.5rem; margin-bottom: 1rem; }
+    #intro p { font-size: 1.3rem; margin-bottom: 1.5rem; }
+    #enter-btn {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background: #ff4d6d;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff4d6d;
+      transition: transform 0.3s ease;
+    }
+    #enter-btn:hover { transform: scale(1.1); }
+
+    /* Gallery */
+    #gallery {
+      background: #fff0f6;
+      flex-direction: column;
+      padding: 1rem;
+    }
+    #gallery h2 { color: #ff4d6d; }
+    #photos {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    #photos img {
+      width: 100%;
+      border-radius: 15px;
+      transition: transform 0.4s ease;
+    }
+    #photos img:hover { transform: scale(1.05); }
+
+    /* Games */
+    .game h2 { color: #ff4d6d; }
+    #cat-area {
+      position: relative;
+      width: 90%;
+      height: 250px;
+      margin: 1rem auto;
+      background: #ffe5ec;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .animal {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .animal:hover { transform: scale(1.3); }
+
+    #balloon-area {
+      position: relative;
+      width: 90%;
+      height: 300px;
+      margin: 1rem auto;
+      background: #ffe5ec;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .balloon {
+      position: absolute;
+      font-size: 2rem;
+      cursor: pointer;
+      animation: floatUp 6s linear forwards;
+    }
+    @keyframes floatUp {
+      from { bottom: -50px; }
+      to { bottom: 350px; }
+    }
+
+    /* Final Message */
+    #message {
+      background: linear-gradient(135deg, #fff0f6, #ffe5ec);
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(255,105,180,0.3);
+      max-width: 90%;
+      margin: auto;
+    }
+    #message h2 { color: #ff4d6d; margin-bottom: 1rem; }
+    #message p {
+      font-size: 1.1rem;
+      color: #333;
+      line-height: 1.6;
+      white-space: pre-line;
+    }
+    .btn {
+      padding: 1rem 2rem;
+      margin-top: 1rem;
+      font-size: 1.2rem;
+      border: none;
+      border-radius: 30px;
+      background: #ff4d6d;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 0 15px rgba(255,77,109,0.6);
+      transition: transform 0.3s ease;
+    }
+    .btn:hover { transform: scale(1.1); }
   </style>
 </head>
 <body>
 
-  <!-- Background music -->
+  <!-- Background Music -->
   <audio id="bg-music" loop>
     <source src="music.mp3" type="audio/mpeg">
-    Your browser does not support the audio tag.
   </audio>
 
   <!-- Loading -->
-  <section id="loading" class="active">
+  <div id="loading" class="section active">
     <h2>Loading... 🐾</h2>
-  </section>
+    <div class="paw" style="left:10%;">🐾</div>
+    <div class="paw" style="left:30%; animation-delay:3s;">🐾</div>
+    <div class="paw" style="left:50%; animation-delay:6s;">🐾</div>
+    <div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
+    <div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
+  </div>
 
   <!-- Intro -->
-  <section id="intro">
+  <div id="intro" class="section">
     <h1>Happy Birthday Vaidehi 🎉</h1>
-    <button onclick="nextSection()">Enter</button>
-  </section>
+    <p>You’re so monnuuu 😏😏</p>
+    <button id="enter-btn">Enter</button>
+  </div>
 
   <!-- Gallery -->
-  <section id="memories">
+  <div id="gallery" class="section">
     <h2>💖 Memories with You 💖</h2>
-    <div id="gallery">
-      <img src="photo1.jpg" alt="memory 1">
-      <img src="photo2.jpg" alt="memory 2">
-      <img src="photo3.jpg" alt="memory 3">
-      <img src="photo4.jpg" alt="memory 4">
+    <div id="photos">
+      <img src="photo1.jpg" alt="memory1">
+      <img src="photo2.jpg" alt="memory2">
+      <img src="photo3.jpg" alt="memory3">
+      <img src="photo4.jpg" alt="memory4">
     </div>
-    <button onclick="nextSection()">Next</button>
-  </section>
+    <button class="btn" onclick="nextSection('game1')">Next ➡️</button>
+  </div>
 
-  <!-- Cat Game -->
-  <section id="cat-game">
-    <h2>🐱 Catch the Cats! 🐱</h2>
-    <p>Click on as many cats as you can in 15 seconds!</p>
-    <div id="cat-game-area"></div>
-    <p id="cat-score">Score: 0</p>
-    <button onclick="startCatGame()">Start Game</button>
-  </section>
+  <!-- Game 1: Find the Cat -->
+  <div id="game1" class="section game">
+    <h2>🐱 Find the Hidden Cat 🐱</h2>
+    <p>Tap the 🐱 before time runs out!</p>
+    <div id="cat-area"></div>
+    <p id="cat-timer">⏳ Time left: 15s</p>
+  </div>
 
-  <!-- Quiz Game -->
-  <section id="quiz">
-    <h2>🧩 Quick Quiz 🧩</h2>
-    <p>What's Vaidehi’s favorite person’s name? 😏</p>
-    <button onclick="quizAnswer(true)">You 😉</button>
-    <button onclick="quizAnswer(false)">Someone else</button>
-    <p id="quiz-result"></p>
-  </section>
+  <!-- Game 2: Pop the Balloon -->
+  <div id="game2" class="section game">
+    <h2>🎈 Pop the Balloons 🎈</h2>
+    <p>One balloon has a surprise…</p>
+    <div id="balloon-area"></div>
+  </div>
 
   <!-- Final Message -->
-  <section id="final-message">
-    <h2>💖 A Special Note 💖</h2>
+  <div id="final" class="section">
     <div id="message">
+      <h2>💌 A Special Note 💌</h2>
       <p>
-        Happy birthday "monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
-        Something cuddly and glowing just like you🥺 ik youre always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 don’t lose your hope and live your life.  
-        Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad) 💕  
+Happy birthday monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
+Something cuddly and glowing just like you🥺 ik you’re always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 don’t lose your hope and live your life.  
 
-        Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
+Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad) 💕  
+
+Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 🎉
       </p>
     </div>
-  </section>
+  </div>
 
-  <!-- Floating paws -->
-  <div class="paw" style="left:10%;">🐾</div>
-  <div class="paw" style="left:30%; animation-delay:3s;">🐾</div>
-  <div class="paw" style="left:50%; animation-delay:6s;">🐾</div>
-  <div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
-  <div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
-
-  <script>
-    let current = 0;
-    const sections = document.querySelectorAll("section");
-
-    function showSection(i) {
-      sections.forEach(s => s.classList.remove("active"));
-      sections[i].classList.add("active");
-    }
-
-    function nextSection() {
-      current++;
-      if (current >= sections.length) return;
-      showSection(current);
-
-      // Start music at intro
-      if (sections[current].id === "memories") {
-        document.getElementById("bg-music").play().catch(()=>{});
-      }
-    }
-
-    // Start after load
-    window.addEventListener("load", () => {
-      setTimeout(() => {
-        showSection(1); // show intro
-      }, 1500);
+<script>
+  // Show section helper
+  function showSection(id) {
+    document.querySelectorAll(".section").forEach(sec => {
+      sec.classList.remove("active");
     });
+    document.getElementById(id).classList.add("active");
+  }
 
-    /* Cat game */
-    let score = 0, gameInterval, timerTimeout;
-    function startCatGame() {
-      score = 0;
-      document.getElementById("cat-score").textContent = "Score: 0";
-      const area = document.getElementById("cat-game-area");
+  // Start after loading
+  window.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => { showSection("intro"); }, 2000);
+  });
+
+  // Enter button
+  document.getElementById("enter-btn").onclick = () => {
+    document.getElementById("bg-music").play();
+    showSection("gallery");
+  };
+
+  // Gallery -> next
+  function nextSection(id) { showSection(id); if(id==="game1") startGame1(); }
+
+  // Game 1: Find the Cat
+  function startGame1() {
+    let area = document.getElementById("cat-area");
+    let timerDisplay = document.getElementById("cat-timer");
+    let timeLeft = 15, interval, timer;
+
+    function spawnAnimals() {
       area.innerHTML = "";
-
-      gameInterval = setInterval(() => {
-        const cat = document.createElement("div");
-        cat.className = "cat";
-        cat.textContent = "🐱";
-        cat.style.top = Math.random() * 250 + "px";
-        cat.style.left = "-40px";
-        cat.style.animationDuration = (2 + Math.random()*3) + "s";
-        cat.onclick = () => {
-          score++;
-          document.getElementById("cat-score").textContent = "Score: " + score;
-          cat.remove();
-        };
-        area.appendChild(cat);
-        setTimeout(()=>cat.remove(), 5000);
-      }, 800);
-
-      timerTimeout = setTimeout(() => {
-        clearInterval(gameInterval);
-        alert("Time's up! Your score: " + score);
-        nextSection();
-      }, 15000);
+      let animals = ["🐶","🐰","🦊","🐸","🐷","🐵","🐱"];
+      animals.sort(() => 0.5 - Math.random());
+      animals.forEach(animal => {
+        let el = document.createElement("div");
+        el.classList.add("animal");
+        el.innerHTML = animal;
+        el.style.top = Math.random()*200+"px";
+        el.style.left = Math.random()*80+"%";
+        if(animal==="🐱"){
+          el.onclick=()=>{
+            clearInterval(interval);clearInterval(timer);
+            alert("🎉 You found the cat!");
+            showSection("game2"); startGame2();
+          };
+        }
+        area.appendChild(el);
+      });
     }
 
-    /* Quiz */
-    function quizAnswer(correct) {
-      const result = document.getElementById("quiz-result");
-      if (correct) {
-        result.textContent = "Correct! 😏";
-        setTimeout(() => nextSection(), 1000);
-      } else {
-        result.textContent = "Nahh, try again 😜";
+    interval=setInterval(spawnAnimals,2000);
+    spawnAnimals();
+
+    timer=setInterval(()=>{
+      timeLeft--;
+      timerDisplay.textContent="⏳ Time left: "+timeLeft+"s";
+      if(timeLeft<=0){
+        clearInterval(interval);clearInterval(timer);
+        alert("😢 Time’s up! Try again!");
+        startGame1();
       }
+    },1000);
+  }
+
+  // Game 2: Balloon Pop
+  function startGame2() {
+    let area=document.getElementById("balloon-area");
+    area.innerHTML="";
+    for(let i=0;i<8;i++){
+      let b=document.createElement("div");
+      b.classList.add("balloon");
+      b.innerHTML="🎈";
+      b.style.left=Math.random()*80+"%";
+      b.style.bottom="-50px";
+      b.style.animationDuration=(4+Math.random()*3)+"s";
+      b.onclick=()=>{
+        if(i===3){
+          alert("✨ Surprise revealed! ✨");
+          showSection("final");
+        } else {
+          b.remove();
+        }
+      };
+      area.appendChild(b);
     }
-  </script>
+  }
+</script>
 </body>
 </html>
