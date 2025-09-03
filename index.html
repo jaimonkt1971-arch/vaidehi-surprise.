@@ -8,219 +8,234 @@
     body, html {
       margin: 0;
       padding: 0;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-      background: #fffafc;
-      color: #333;
-      text-align: center;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+      background: #fff0f6;
       overflow-x: hidden;
+      text-align: center;
     }
+
     .hidden { display: none; }
-    .fade { animation: fadeIn 1s forwards; }
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
+
+    /* Fade transition for smoother changes */
+    .fade {
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
     }
-    .slide-up { animation: slideUp 0.8s forwards; }
-    @keyframes slideUp {
-      from { transform: translateY(50px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
-    .bounce { animation: bounce 1s infinite; }
-    @keyframes bounce {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-10px); }
+    .fade.show {
+      opacity: 1;
     }
 
     /* Loading screen */
     #loading {
       position: fixed;
+      top: 0; left: 0;
       width: 100%; height: 100%;
-      display: flex; justify-content: center; align-items: center;
-      background: #fde2f3;
-      z-index: 10;
+      background: #ffdde1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       flex-direction: column;
+      z-index: 9999;
     }
-    .paw {
+    #loading h2 {
+      color: #ff4d6d;
+      animation: pulse 1.5s infinite;
+    }
+
+    /* Intro */
+    #intro {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(135deg, #ffb3c6, #ffdde1);
+    }
+    #intro h1 {
       font-size: 2rem;
-      position: absolute;
-      animation: floatUp 5s infinite;
+      color: #fff;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 5px #00000033;
     }
-    @keyframes floatUp {
-      from { transform: translateY(100vh); opacity: 0; }
-      to { transform: translateY(-10vh); opacity: 1; }
+    #enter-btn {
+      padding: 0.8rem 2rem;
+      font-size: 1.2rem;
+      background: #ff4d6d;
+      color: #fff;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 0 15px #ff4d6d;
     }
 
     /* Gallery */
+    #gallery {
+      padding: 1rem;
+    }
+    #gallery h2 {
+      color: #ff4d6d;
+    }
     #gallery img {
       width: 90%;
       max-width: 300px;
       margin: 10px;
       border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-
-    button {
-      background: #ff80ab;
-      border: none;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 25px;
-      font-size: 16px;
-      cursor: pointer;
-      margin: 15px;
       box-shadow: 0 4px 10px rgba(0,0,0,0.2);
     }
-    button:hover { background: #ff4d80; }
 
-    /* Balloon */
-    .balloon {
-      width: 80px;
-      height: 100px;
-      background: pink;
-      border-radius: 50% 50% 50% 50%;
-      margin: 30px auto;
-      position: relative;
-    }
-    .balloon:after {
-      content: '';
-      position: absolute;
-      bottom: -20px;
-      left: 50%;
-      width: 2px;
-      height: 30px;
-      background: gray;
+    /* Games */
+    .game {
+      padding: 2rem;
     }
 
-    /* Word scramble */
-    .scramble span {
-      display: inline-block;
-      margin: 0 5px;
-      padding: 10px;
-      font-size: 20px;
-      background: #ffe0f0;
-      border-radius: 8px;
-      cursor: pointer;
+    /* Teaser + Message */
+    #teaser, #final {
+      padding: 2rem;
     }
 
-    /* Final message */
-    #finalMessage {
-      font-size: 1.2rem;
-      padding: 20px;
-      white-space: pre-line;
+    /* Floating paws */
+    .paw {
+      position: fixed;
+      font-size: 2rem;
+      opacity: 0.5;
+      animation: floatPaw 12s linear infinite;
+      bottom: -5%;
+    }
+    @keyframes floatPaw {
+      0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+      20% { opacity: 1; }
+      80% { opacity: 1; }
+      100% { transform: translateY(-120vh) rotate(360deg); opacity: 0; }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 1; }
     }
   </style>
 </head>
 <body>
 
-  <!-- Background music -->
+  <!-- Background Music -->
   <audio id="bgMusic" loop>
     <source src="music.mp3" type="audio/mpeg">
   </audio>
 
-  <!-- Loading -->
+  <!-- Loading screen -->
   <div id="loading">
-    <h2>Loading...</h2>
-    <div class="paw" style="left:20%;">🐾</div>
-    <div class="paw" style="left:50%;">🐾</div>
-    <div class="paw" style="left:80%;">🐾</div>
+    <h2>Loading... 🐾</h2>
   </div>
 
   <!-- Intro -->
-  <div id="intro" class="hidden">
-    <h1 class="fade">🎉 Happy Birthday Vaidehi 🎉</h1>
-    <button onclick="startExperience()">Enter</button>
+  <div id="intro" class="hidden fade">
+    <h1>Happy Birthday Vaidehi 🎉</h1>
+    <button id="enter-btn" onclick="startExperience()">Enter</button>
   </div>
 
   <!-- Gallery -->
-  <div id="gallery" class="hidden">
-    <h2>💖 Some Memories 💖</h2>
-    <img src="photo1.jpg" alt="Memory 1">
-    <img src="photo2.jpg" alt="Memory 2">
-    <img src="photo3.jpg" alt="Memory 3">
-    <img src="photo4.jpg" alt="Memory 4">
-    <button onclick="showGame1()">Next ➡</button>
+  <div id="gallery" class="hidden fade">
+    <h2>💖 Memories with You 💖</h2>
+    <img src="photo1.jpg" alt="memory 1">
+    <img src="photo2.jpg" alt="memory 2">
+    <img src="photo3.jpg" alt="memory 3">
+    <img src="photo4.jpg" alt="memory 4">
+    <br><br>
+    <button onclick="showGame1()">Next 🎮</button>
   </div>
 
-  <!-- Game 1 -->
-  <div id="game1" class="hidden">
-    <h2>🐱 Find the Cat!</h2>
-    <p>Tap the right image 🐾</p>
+  <!-- Game 1: Find the Cat -->
+  <div id="game1" class="game hidden fade">
+    <h2>🐱 Find the Cat 🐱</h2>
     <button onclick="wrong()">🐶</button>
-    <button onclick="correct('game2')">🐱</button>
     <button onclick="wrong()">🐰</button>
+    <button onclick="correct('game2')">🐱</button>
   </div>
 
-  <!-- Game 2 -->
-  <div id="game2" class="hidden">
-    <h2>🎈 Pop the Balloon!</h2>
-    <div class="balloon bounce" onclick="correct('game3')"></div>
+  <!-- Game 2: Pop the Balloon -->
+  <div id="game2" class="game hidden fade">
+    <h2>🎈 Pop the Balloon 🎈</h2>
+    <button onclick="correct('game3')">🎈 Pop!</button>
   </div>
 
-  <!-- Game 3 -->
-  <div id="game3" class="hidden">
-    <h2>🔤 Unscramble this word:</h2>
-    <div class="scramble" id="scramble">
-      <span draggable="true">L</span>
-      <span draggable="true">O</span>
-      <span draggable="true">V</span>
-      <span draggable="true">E</span>
-    </div>
-    <button onclick="checkScramble()">Check</button>
+  <!-- Game 3: Word Scramble -->
+  <div id="game3" class="game hidden fade">
+    <h2>🔤 Unscramble the word: "EVOL"</h2>
+    <button onclick="checkScramble()">LOVE</button>
+    <button onclick="wrong()">VELO</button>
+    <button onclick="wrong()">LOEV</button>
   </div>
 
   <!-- Teaser -->
-  <div id="teaser" class="hidden">
-    <h2 class="fade">🎁 Something soft, cuddly & glowing… coming soon 🐼💡</h2>
-    <button onclick="showFinal()">Next ➡</button>
+  <div id="teaser" class="hidden fade">
+    <h2>🎁 A Little Teaser 🎁</h2>
+    <p>✨ Something soft, cuddly, and glowing is waiting for you... ✨</p>
+    <button onclick="showFinal()">💌 Final Message 💌</button>
   </div>
 
-  <!-- Final Message -->
-  <div id="final" class="hidden">
-    <h2>💌 Message for You 💌</h2>
-    <div id="finalMessage" class="slide-up">
-      Happy birthday "monnuuu🥺😏😏, and yeah this is just the trailer😏 vakki ithokke kazhinj varanond😁.  
-      Something cuddly and glowing just like you🥺 ik youre always troubled by stuff and overthink a lot and that nee monnaya😏 just know that me here for you😏😏 dont lose your hope and live your life.  
-      Most importantly, try your best to always stay positive😏 (you have a pretty nice bf so why be sad)  
+  <!-- Final message -->
+  <div id="final" class="hidden fade">
+    <h2>💖 A Special Note 💖</h2>
+    <p>
+      Happy birthday monnuuu 🥺😏😏, and yeah this is just the trailer 😏 vakki ithokke kazhinj varanond 😁.  
+      Something cuddly and glowing just like you 🥺.  
+      I know you’re always troubled by stuff and overthink a lot — and that’s you, monnaya 😏.  
+      Just know that I’m here for you 😏😏. Don’t lose your hope and live your life.  
 
-      Anyways ilysm and HAPPY BIRTHDAY MONNUUUUU 💖
-    </div>
+      Most importantly, try your best to always stay positive 😏 (you have a pretty nice bf, so why be sad? 😉). 💕  
+
+      Anyways, ILYSM and HAPPY BIRTHDAY MONNUUUUU 🎉
+    </p>
   </div>
+
+  <!-- Floating paws -->
+  <div class="paw" style="left:10%;">🐾</div>
+  <div class="paw" style="left:30%; animation-delay:3s;">🐾</div>
+  <div class="paw" style="left:50%; animation-delay:6s;">🐾</div>
+  <div class="paw" style="left:70%; animation-delay:9s;">🐾</div>
+  <div class="paw" style="left:85%; animation-delay:12s;">🐾</div>
 
   <script>
+    // Utility: fade show/hide
+    function showSection(id) {
+      document.querySelectorAll("body > div").forEach(el => {
+        if (el.id && el.id !== "loading") {
+          el.classList.add('hidden');
+          el.classList.remove('show');
+        }
+      });
+      let section = document.getElementById(id);
+      section.classList.remove('hidden');
+      setTimeout(() => section.classList.add('show'), 50);
+    }
+
     // Loading screen
-    setTimeout(() => {
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('intro').classList.remove('hidden');
-    }, 3000);
+    window.onload = function () {
+      setTimeout(() => {
+        document.getElementById('loading').style.display = "none";
+        showSection('intro');
+      }, 2000);
+    };
 
     function startExperience() {
-      document.getElementById('intro').classList.add('hidden');
-      document.getElementById('gallery').classList.remove('hidden');
-      document.getElementById('bgMusic').play();
+      showSection('gallery');
+      let music = document.getElementById('bgMusic');
+      music.play().catch(() => {
+        console.log("Music autoplay blocked, needs user tap.");
+      });
     }
 
-    function showGame1() {
-      document.getElementById('gallery').classList.add('hidden');
-      document.getElementById('game1').classList.remove('hidden');
-    }
+    function showGame1() { showSection('game1'); }
 
     function wrong() { alert("Oops! Try again 🐾"); }
 
-    function correct(nextId) {
-      document.querySelectorAll("body > div").forEach(el => el.classList.add('hidden'));
-      document.getElementById(nextId).classList.remove('hidden');
-    }
+    function correct(nextId) { showSection(nextId); }
 
     function checkScramble() {
-      // In real version you could check actual order, here just unlock
       alert("Correct! 💖");
-      correct('teaser');
+      showSection('teaser');
     }
 
-    function showFinal() {
-      document.getElementById('teaser').classList.add('hidden');
-      document.getElementById('final').classList.remove('hidden');
-    }
+    function showFinal() { showSection('final'); }
   </script>
 </body>
 </html>
